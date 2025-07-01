@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Join UP",
-  description: "Join UP - Your go-to event management platform",
+  title: "Join up",
+  description: "Join up - Your go-to event management platform",
 };
 
 export default function RootLayout({
