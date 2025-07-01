@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -21,14 +21,18 @@ import { useI18n } from "@/lib/i18n-context";
 import { LanguageToggle } from "./language-toggle";
 import AnimatedButton from "../animated-button";
 import { ThemeToggle } from "./theme-toggle";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setLogout } from "@/redux/features/auth-slice";
+
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+  console.log(isAuthenticated, user);
+  const dispatch = useAppDispatch();
   const pathname = usePathname();
-  //   const { isAuthenticated, user, logout } = useAuth();
+  const router = useRouter();
   const { t } = useI18n();
-
-  const logout = () => {};
 
   const navItems = [
     { href: "/", label: t("nav.home") },
@@ -37,18 +41,14 @@ export default function Navbar() {
     { href: "/my-events", label: t("nav.myEvents"), protected: true },
   ];
 
-  const isAuthenticated = true; // Replace with actual authentication check
-  const user = {
-    name: "John Doe",
-    photoURL: "/placeholder.svg",
-  };
-
   const filteredNavItems = navItems.filter(
     (item) => !item.protected || (item.protected && isAuthenticated)
   );
 
   const handleLogout = () => {
-    logout();
+    localStorage.removeItem("accessToken");
+    dispatch(setLogout());
+    router.push("/login");
   };
 
   const NavLinks = ({ mobile = false, onItemClick = () => {} }) => (
