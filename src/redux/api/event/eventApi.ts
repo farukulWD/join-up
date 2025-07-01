@@ -18,6 +18,17 @@ export type TEventResponse = {
   attendeeCount: number;
 };
 
+export type TParams = {
+  searchTerm?: string;
+  location?: string;
+  date?: string | Date;
+  dateRange?: string;
+  page?: number;
+  limit?: number;
+  sort?: string;
+  fields?: string;
+};
+
 const eventApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createEvent: builder.mutation<TResponse<TEventResponse>, EventFormValues>({
@@ -28,10 +39,11 @@ const eventApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["events"],
     }),
-    getEvents: builder.query<TResponse<TEventResponse[]>, undefined>({
-      query: () => ({
-        url: "/events",
+    getEvents: builder.query<TResponse<TEventResponse[]>, TParams>({
+      query: (params) => ({
+        url: "/events/all-events",
         method: "GET",
+        params,
       }),
     }),
     getEventById: builder.query<TResponse<TEventResponse>, string>({
@@ -42,9 +54,10 @@ const eventApi = baseApi.injectEndpoints({
     }),
     joinEvent: builder.mutation<TResponse<TEventResponse>, string>({
       query: (eventId) => ({
-        url: `/events/join/${eventId}`,
+        url: `/events/join-event/${eventId}`,
         method: "POST",
       }),
+      invalidatesTags: ["events"],
     }),
     updateEvent: builder.mutation<
       TResponse<TEventResponse>,

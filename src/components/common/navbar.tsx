@@ -23,12 +23,13 @@ import AnimatedButton from "../animated-button";
 import { ThemeToggle } from "./theme-toggle";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setLogout } from "@/redux/features/auth-slice";
-
+import { toast } from "sonner";
+import { useLogoutMutation } from "@/redux/api/auth/auth-api";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
-  console.log(isAuthenticated, user);
+  const [logout] = useLogoutMutation();
   const dispatch = useAppDispatch();
   const pathname = usePathname();
   const router = useRouter();
@@ -45,9 +46,11 @@ export default function Navbar() {
     (item) => !item.protected || (item.protected && isAuthenticated)
   );
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logout().unwrap();
     localStorage.removeItem("accessToken");
     dispatch(setLogout());
+    toast.success(t("nav.logoutSuccess"));
     router.push("/login");
   };
 

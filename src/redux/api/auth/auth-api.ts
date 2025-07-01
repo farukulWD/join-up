@@ -25,7 +25,7 @@ export const authApi = baseApi.injectEndpoints({
         data: userData,
       }),
     }),
-    logout: builder.mutation<TResponse<{}>, undefined>({
+    logout: builder.mutation<TResponse<{}>, void>({
       query: () => ({
         url: "auth/sign-out",
         method: "POST",
@@ -34,4 +34,5 @@ export const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useSignUpMutation } = authApi;
+export const { useLoginMutation, useSignUpMutation, useLogoutMutation } =
+  authApi;

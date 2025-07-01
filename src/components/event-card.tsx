@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n-context";
 import AnimatedButton from "./animated-button";
 import { TEventResponse } from "@/redux/api/event/eventApi";
+import dayjs from "dayjs";
 
 interface EventCardProps {
   event: TEventResponse;
@@ -22,6 +23,7 @@ interface EventCardProps {
   onDelete?: (eventId: string) => void;
   currentUserId?: string;
   index?: number;
+  isLoading?: boolean;
 }
 
 export default function EventCard({
@@ -32,29 +34,15 @@ export default function EventCard({
   onDelete,
   currentUserId,
   index = 0,
+  isLoading = false,
 }: EventCardProps) {
   const { t } = useI18n();
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const formatTime = (timeString: string) => {
-    return new Date(`2000-01-01T${timeString}`).toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
 
   const hasUserJoined =
     currentUserId &&
     event.joinedUsers.some((user) => user._id === currentUserId);
+
+  console.log({ location: event.location });
 
   return (
     <motion.div
@@ -85,7 +73,9 @@ export default function EventCard({
               <h3 className="font-semibold capitalize text-lg leading-tight">
                 {event.title}
               </h3>
-              <p className="text-sm text-muted-foreground">by {event.postedBy.name}</p>
+              <p className="text-sm text-muted-foreground">
+                by {event.postedBy.name}
+              </p>
             </div>
             <motion.div
               initial={{ scale: 0 }}
@@ -117,7 +107,7 @@ export default function EventCard({
               transition={{ duration: 0.2 }}
             >
               <Calendar className="h-4 w-4" />
-              <span>{formatDate(event.date)}</span>
+              <span>{dayjs(event.date).format("MMMM D, YYYY")}</span>
             </motion.div>
 
             <motion.div
@@ -126,7 +116,7 @@ export default function EventCard({
               transition={{ duration: 0.2 }}
             >
               <Clock className="h-4 w-4" />
-              <span>{formatTime(event.time)}</span>
+              <span>{dayjs(event.time).format("h:mm A")}</span>
             </motion.div>
 
             <motion.div
@@ -181,7 +171,7 @@ export default function EventCard({
               <AnimatedButton
                 className="w-full"
                 onClick={() => onJoin?.(event._id)}
-                disabled={hasUserJoined as boolean}
+                disabled={(hasUserJoined as boolean) || isLoading}
                 whileHover={hasUserJoined ? {} : { scale: 1.02 }}
                 whileTap={hasUserJoined ? {} : { scale: 0.98 }}
               >
