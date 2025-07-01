@@ -9,22 +9,49 @@ import { useI18n } from "@/lib/i18n-context";
 import AnimatedPage from "@/components/animated-page";
 import AnimatedButton from "@/components/animated-button";
 import StaggerContainer from "@/components/stagger-container";
-import { mockCurrentUser, mockEvents } from "@/lib/mock-data";
+import { useAppSelector } from "@/redux/hooks";
+import { useGetEventsQuery } from "@/redux/api/event/eventApi";
 import AnimatedCounter from "@/components/animated-counter";
 
 export default function HomePage() {
   const { t } = useI18n();
+  const user = useAppSelector((state) => state.auth.user);
+
+  // Fetch all events (limit to 100 for stats/upcoming)
+  const { data, isLoading, isError } = useGetEventsQuery({ limit: 100, sort: "-date" });
+  const events = data?.data || [];
 
   // Get upcoming events (next 3 events)
-  const upcomingEvents = mockEvents
-    .filter((event) => new Date(event.date) >= new Date())
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  const now = new Date();
+  const upcomingEvents = events
+    .filter((event) => new Date(event.date) >= now)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, 3);
 
-  const totalAttendees = mockEvents.reduce(
-    (sum, event) => sum + event.attendeeCount,
+  const totalAttendees = events.reduce(
+    (sum, event) => sum + (event.attendeeCount || 0),
     0
   );
+
+  if (isLoading) {
+    return (
+      <AnimatedPage>
+        <div className="flex items-center justify-center h-96">
+          <span className="text-lg text-muted-foreground">{t("loading") || "Loading..."}</span>
+        </div>
+      </AnimatedPage>
+    );
+  }
+
+  if (isError) {
+    return (
+      <AnimatedPage>
+        <div className="flex items-center justify-center h-96">
+          <span className="text-lg text-red-500">{t("error.loadingEvents") || "Failed to load events."}</span>
+        </div>
+      </AnimatedPage>
+    );
+  }
 
   return (
     <AnimatedPage>
@@ -166,7 +193,7 @@ export default function HomePage() {
           {[
             {
               title: t("home.stats.totalEvents"),
-              value: mockEvents.length,
+              value: events.length,
               description: t("home.stats.activeEvents"),
               icon: Calendar,
             },
@@ -231,7 +258,7 @@ export default function HomePage() {
                   key={event._id}
                   event={event}
                   onJoin={(eventId) => console.log("Join event:", eventId)}
-                  currentUserId={mockCurrentUser._id}
+                  currentUserId={user?._id || ""}
                   index={index}
                 />
               ))}
