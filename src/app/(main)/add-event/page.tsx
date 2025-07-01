@@ -45,6 +45,12 @@ export default function AddEventPage() {
   const { user } = useAppSelector((state) => state.auth);
   const [createEvent, { isLoading }] = useCreateEventMutation();
 
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) {
+    router.push("/login");
+    return null;
+  }
+
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventValidationSchema),
     defaultValues: {

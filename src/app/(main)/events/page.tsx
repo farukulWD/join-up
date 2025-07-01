@@ -27,12 +27,19 @@ import { toast } from "sonner";
 import DataPagination from "@/components/data-paginaton";
 import { CustomDatePicker } from "@/components/ui/date-picker";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function EventsContent() {
   const { user } = useAppSelector((state) => state.auth);
   const { t } = useI18n();
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterPeriod, setFilterPeriod] = useState("all");
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) {
+    router.push("/login");
+    return null;
+  }
   const [joinEvent, { isLoading: joining }] = useJoinEventMutation();
   const [filters, setFilters] = useState<TParams>({
     page: 1,

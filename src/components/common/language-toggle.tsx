@@ -13,6 +13,7 @@ export function LanguageToggle() {
     { code: "es", name: t("language.spanish"), flag: "🇪🇸" },
     { code: "fr", name: t("language.french"), flag: "🇫🇷" },
     { code: "de", name: t("language.german"), flag: "🇩🇪" },
+    { code: "bn", name: t("language.bengali"), flag: "🇧🇩" },
   ]
 
   return (

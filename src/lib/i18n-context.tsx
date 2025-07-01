@@ -3,7 +3,7 @@
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
 
-type Language = "en" | "es" | "fr" | "de"
+type Language = "en" | "es" | "fr" | "de" | "bn"
 
 interface I18nContextType {
   language: Language
@@ -21,6 +21,7 @@ const translations = {
       myEvents: "My Event",
       signIn: "Sign In",
       logout: "Logout",
+      logoutSuccess: "Successfully logged out",
     },
     // Theme
     theme: {
@@ -163,6 +164,9 @@ const translations = {
       by: "by",
       attendees: "attendees",
     },
+    error: {
+      loadingEvents: "Failed to load events.",
+    },
   },
   es: {
     // Navigation
@@ -173,6 +177,7 @@ const translations = {
       myEvents: "Mis Eventos",
       signIn: "Iniciar Sesión",
       logout: "Cerrar Sesión",
+      logoutSuccess: "Cierre de sesión exitoso",
     },
     // Theme
     theme: {
@@ -318,6 +323,9 @@ const translations = {
       by: "por",
       attendees: "asistentes",
     },
+    error: {
+      loadingEvents: "No se pudieron cargar los eventos.",
+    },
   },
   fr: {
     // Navigation
@@ -328,6 +336,7 @@ const translations = {
       myEvents: "Mes Événements",
       signIn: "Se Connecter",
       logout: "Déconnexion",
+      logoutSuccess: "Déconnexion réussie",
     },
     // Theme
     theme: {
@@ -474,6 +483,9 @@ const translations = {
       by: "par",
       attendees: "participants",
     },
+    error: {
+      loadingEvents: "Échec du chargement des événements.",
+    },
   },
   de: {
     // Navigation
@@ -484,6 +496,7 @@ const translations = {
       myEvents: "Meine Veranstaltungen",
       signIn: "Anmelden",
       logout: "Abmelden",
+      logoutSuccess: "Erfolgreich abgemeldet",
     },
     // Theme
     theme: {
@@ -629,6 +642,154 @@ const translations = {
       filter: "Filtern",
       by: "von",
       attendees: "Teilnehmer",
+    },
+    error: {
+      loadingEvents: "Veranstaltungen konnten nicht geladen werden.",
+    },
+  },
+  bn: {
+    nav: {
+      home: "হোম",
+      events: "ইভেন্টসমূহ",
+      addEvent: "ইভেন্ট যোগ করুন",
+      myEvents: "আমার ইভেন্ট",
+      signIn: "সাইন ইন",
+      logout: "লগআউট",
+      logoutSuccess: "সফলভাবে লগআউট হয়েছে",
+    },
+    theme: {
+      toggle: "থিম পরিবর্তন করুন",
+      light: "লাইট",
+      dark: "ডার্ক",
+      system: "সিস্টেম",
+    },
+    language: {
+      toggle: "ভাষা পরিবর্তন করুন",
+      english: "ইংরেজি",
+      spanish: "স্প্যানিশ",
+      french: "ফরাসি",
+      german: "জার্মান",
+      bengali: "বাংলা",
+    },
+    home: {
+      heroTitle: "দারুণ ইভেন্ট আবিষ্কার করুন",
+      heroSubtitle: "আপনার কমিউনিটিতে আকর্ষণীয় ইভেন্টে যোগ দিন এবং একসাথে স্মরণীয় মুহূর্ত তৈরি করুন",
+      browseEvents: "ইভেন্ট দেখুন",
+      createEvent: "ইভেন্ট তৈরি করুন",
+      upcomingEvents: "আসন্ন ইভেন্টসমূহ",
+      viewAllEvents: "সব ইভেন্ট দেখুন",
+      noUpcomingEvents: "কোনো আসন্ন ইভেন্ট নেই",
+      beFirstToCreate: "আপনার কমিউনিটিতে প্রথম ইভেন্ট তৈরি করুন!",
+      features: {
+        easyCreation: "সহজ ইভেন্ট তৈরি",
+        easyCreationDesc: "সহজ ইন্টারফেসে ইভেন্ট তৈরি ও ম্যানেজ করুন। আপনার আগ্রহ শেয়ার করুন।",
+        joinConnect: "যোগ দিন ও সংযোগ করুন",
+        joinConnectDesc: "আপনার আগ্রহের ইভেন্ট খুঁজুন এবং নতুন মানুষের সাথে সংযোগ করুন।",
+        localCommunity: "স্থানীয় কমিউনিটি",
+        localCommunityDesc: "আপনার এলাকায় ইভেন্ট খুঁজুন এবং সক্রিয় সদস্য হোন।",
+      },
+      stats: {
+        totalEvents: "মোট ইভেন্ট",
+        activeEvents: "সক্রিয় ইভেন্ট",
+        totalAttendees: "মোট অংশগ্রহণকারী",
+        peopleJoining: "মানুষ ইভেন্টে যোগ দিচ্ছে",
+        thisMonth: "এই মাস",
+        upcomingEvents: "আসন্ন ইভেন্টসমূহ",
+      },
+    },
+    events: {
+      title: "ইভেন্টসমূহ",
+      subtitle: "আপনার কমিউনিটিতে দারুণ ইভেন্ট আবিষ্কার করুন ও যোগ দিন",
+      searchPlaceholder: "শিরোনাম দিয়ে ইভেন্ট খুঁজুন...",
+      filterByDate: "তারিখ দিয়ে ফিল্টার করুন",
+      allEvents: "সব ইভেন্ট",
+      today: "আজ",
+      currentWeek: "এই সপ্তাহ",
+      lastWeek: "গত সপ্তাহ",
+      currentMonth: "এই মাস",
+      lastMonth: "গত মাস",
+      joinEvent: "ইভেন্টে যোগ দিন",
+      alreadyJoined: "ইতিমধ্যে যোগ দিয়েছেন",
+      noEventsFound: "কোনো ইভেন্ট পাওয়া যায়নি",
+      adjustFilters: "অনুগ্রহ করে ফিল্টার পরিবর্তন করুন।",
+    },
+    addEvent: {
+      title: "ইভেন্ট যোগ করুন",
+      subtitle: "নতুন ইভেন্ট তৈরি করুন এবং কমিউনিটিতে শেয়ার করুন।",
+      eventDetails: "ইভেন্টের বিস্তারিত",
+      eventTitle: "ইভেন্টের শিরোনাম",
+      eventTitlePlaceholder: "ইভেন্টের শিরোনাম লিখুন",
+      name: "নাম (যিনি ইভেন্ট পোস্ট করেছেন)",
+      namePlaceholder: "আপনার নাম",
+      date: "তারিখ",
+      time: "সময়",
+      location: "স্থান",
+      locationPlaceholder: "ইভেন্টের স্থান লিখুন",
+      description: "বর্ণনা",
+      descriptionPlaceholder: "আপনার ইভেন্ট বর্ণনা করুন...",
+      attendeeCount: "অংশগ্রহণকারীর সংখ্যা",
+      addEventButton: "ইভেন্ট যোগ করুন",
+      addingEvent: "ইভেন্ট যোগ হচ্ছে...",
+      cancel: "বাতিল",
+    },
+    myEvents: {
+      title: "আমার ইভেন্ট",
+      subtitle: "আপনি যে ইভেন্ট তৈরি করেছেন তা ম্যানেজ করুন",
+      addEvent: "ইভেন্ট যোগ করুন",
+      noEventsYet: "আপনি এখনো কোনো ইভেন্ট তৈরি করেননি",
+      createFirstEvent: "প্রথম ইভেন্ট তৈরি করে মানুষকে একত্র করুন।",
+      createYourFirstEvent: "আপনার প্রথম ইভেন্ট তৈরি করুন",
+      update: "আপডেট",
+      delete: "ডিলিট",
+      deleteConfirmTitle: "আপনি কি নিশ্চিত?",
+      deleteConfirmDesc: "এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না। ইভেন্ট ও সংশ্লিষ্ট সব তথ্য মুছে যাবে।",
+      deleteEvent: "ইভেন্ট ডিলিট করুন",
+      updateEvent: "ইভেন্ট আপডেট করুন",
+      updateEventDesc: "আপডেট ফর্ম এখানে থাকবে।",
+    },
+    auth: {
+      welcomeBack: "আবার স্বাগতম",
+      signInSubtitle: "আপনার EventHub অ্যাকাউন্টে সাইন ইন করুন",
+      signIn: "সাইন ইন",
+      signUp: "সাইন আপ",
+      createAccount: "অ্যাকাউন্ট তৈরি করুন",
+      signUpSubtitle: "EventHub-এ যোগ দিন এবং ইভেন্ট আবিষ্কার শুরু করুন",
+      email: "ইমেইল",
+      emailPlaceholder: "আপনার ইমেইল লিখুন",
+      password: "পাসওয়ার্ড",
+      passwordPlaceholder: "আপনার পাসওয়ার্ড লিখুন",
+      createPassword: "পাসওয়ার্ড তৈরি করুন",
+      name: "নাম",
+      namePlaceholder: "আপনার পুরো নাম লিখুন",
+      photoURL: "ছবির URL",
+      photoURLPlaceholder: "https://example.com/photo.jpg (ঐচ্ছিক)",
+      signingIn: "সাইন ইন হচ্ছে...",
+      creatingAccount: "অ্যাকাউন্ট তৈরি হচ্ছে...",
+      dontHaveAccount: "অ্যাকাউন্ট নেই?",
+      alreadyHaveAccount: "ইতিমধ্যে অ্যাকাউন্ট আছে?",
+      allFieldsRequired: "সব ফিল্ড আবশ্যক",
+      nameEmailPasswordRequired: "নাম, ইমেইল ও পাসওয়ার্ড আবশ্যক",
+      demoCredentials: "ডেমো ক্রেডেনশিয়ালস:",
+    },
+    privateRoute: {
+      accessRestricted: "প্রবেশ সীমাবদ্ধ",
+      signInRequired: "এই পেজ দেখতে হলে আপনাকে সাইন ইন করতে হবে।",
+      createAccount: "অ্যাকাউন্ট তৈরি করুন",
+    },
+    common: {
+      loading: "লোড হচ্ছে...",
+      cancel: "বাতিল",
+      save: "সংরক্ষণ",
+      delete: "ডিলিট",
+      update: "আপডেট",
+      create: "তৈরি করুন",
+      search: "অনুসন্ধান",
+      filter: "ফিল্টার",
+      by: "দ্বারা",
+      attendees: "অংশগ্রহণকারী",
+    },
+    error: {
+      loadingEvents: "ইভেন্ট লোড করতে ব্যর্থ হয়েছে।",
     },
   },
 }

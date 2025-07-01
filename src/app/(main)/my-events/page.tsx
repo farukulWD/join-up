@@ -34,9 +34,16 @@ import { globalErrorHandler } from "@/lib/global-error-handler";
 import { toast } from "sonner";
 import LoadingSpinner from "@/components/laoding-spinner";
 import AnimatedPage from "@/components/animated-page";
+import { useRouter } from "next/navigation";
 
 export default function MyEventsPage() {
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+  const router = useRouter();
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) {
+    router.push("/login");
+    return null;
+  }
 
   const { data: myEvents, isLoading: eventsLoading } = useGetMyEventsQuery(
     undefined,
