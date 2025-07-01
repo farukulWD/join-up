@@ -1,42 +1,37 @@
 import { TResponse } from "@/lib/types";
 import { baseApi } from "../base-api";
-
-type TUser = {
-  name: string;
-  email: string;
-  photoURL: string;
-  _id: string;
-  updatedAt: string;
-  createdAt: string;
-};
+import { TUser } from "@/redux/features/auth-slice";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<
       TResponse<{
         accessToken: string;
-        data: {
-          name: string;
-          email: string;
-          photoURL?: string;
-          _id: string;
-        };
+        user: TUser;
       }>,
-      any
+      { email: string; password: string }
     >({
-      query: (formData) => ({
-        url: "/auth/login",
+      query: (loginData) => ({
+        url: "auth/sign-in",
         method: "POST",
-        data: formData,
+        data: loginData,
       }),
     }),
-    getSingleUser: builder.query<TResponse<TUser>, undefined>({
+
+    signUp: builder.mutation<TResponse<TUser>, Partial<TUser>>({
+      query: (userData) => ({
+        url: "users/sign-up",
+        method: "POST",
+        data: userData,
+      }),
+    }),
+    logout: builder.mutation<TResponse<{}>, undefined>({
       query: () => ({
-        url: "/users/get-user",
-        method: "GET",
+        url: "auth/sign-out",
+        method: "POST",
       }),
     }),
   }),
 });
 
-export const { useLoginMutation, useGetSingleUserQuery } = authApi;
+export const { useLoginMutation, useSignUpMutation } = authApi;
