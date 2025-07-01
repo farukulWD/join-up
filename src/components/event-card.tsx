@@ -1,22 +1,27 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Calendar, Clock, MapPin, Users } from "lucide-react"
-import { motion } from "framer-motion"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Calendar, Clock, MapPin, Users } from "lucide-react";
+import { motion } from "framer-motion";
 
-import { useI18n } from "@/lib/i18n-context"
-import AnimatedButton from "./animated-button"
-import { Event } from "@/lib/types"
+import { useI18n } from "@/lib/i18n-context";
+import AnimatedButton from "./animated-button";
+import { TEventResponse } from "@/redux/api/event/eventApi";
 
 interface EventCardProps {
-  event: Event
-  showActions?: boolean
-  onJoin?: (eventId: string) => void
-  onUpdate?: (eventId: string) => void
-  onDelete?: (eventId: string) => void
-  currentUserId?: string
-  index?: number
+  event: TEventResponse;
+  showActions?: boolean;
+  onJoin?: (eventId: string) => void;
+  onUpdate?: (eventId: string) => void;
+  onDelete?: (eventId: string) => void;
+  currentUserId?: string;
+  index?: number;
 }
 
 export default function EventCard({
@@ -28,7 +33,7 @@ export default function EventCard({
   currentUserId,
   index = 0,
 }: EventCardProps) {
-  const { t } = useI18n()
+  const { t } = useI18n();
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -36,18 +41,20 @@ export default function EventCard({
       year: "numeric",
       month: "long",
       day: "numeric",
-    })
-  }
+    });
+  };
 
   const formatTime = (timeString: string) => {
     return new Date(`2000-01-01T${timeString}`).toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "2-digit",
       hour12: true,
-    })
-  }
+    });
+  };
 
-  const hasUserJoined = currentUserId && event.joinedUsers.includes(currentUserId)
+  const hasUserJoined =
+    currentUserId &&
+    event.joinedUsers.some((user) => user._id === currentUserId);
 
   return (
     <motion.div
@@ -75,13 +82,19 @@ export default function EventCard({
             transition={{ delay: 0.2 + index * 0.1 }}
           >
             <div className="space-y-1">
-              <h3 className="font-semibold text-lg leading-tight">{event.title}</h3>
-              <p className="text-sm text-muted-foreground">by {event.name}</p>
+              <h3 className="font-semibold capitalize text-lg leading-tight">
+                {event.title}
+              </h3>
+              <p className="text-sm text-muted-foreground">by {event.postedBy.name}</p>
             </div>
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ delay: 0.3 + index * 0.1, type: "spring", stiffness: 200 }}
+              transition={{
+                delay: 0.3 + index * 0.1,
+                type: "spring",
+                stiffness: 200,
+              }}
             >
               <Badge variant="secondary" className="flex items-center gap-1">
                 <Users className="h-3 w-3" />
@@ -125,7 +138,9 @@ export default function EventCard({
               <span>{event.location}</span>
             </motion.div>
 
-            <p className="text-sm text-muted-foreground line-clamp-3">{event.description}</p>
+            <p className="text-sm text-muted-foreground line-clamp-3">
+              {event.description}
+            </p>
           </motion.div>
         </CardContent>
 
@@ -153,7 +168,10 @@ export default function EventCard({
                   size="sm"
                   onClick={() => onDelete?.(event._id)}
                   className="flex-1"
-                  whileHover={{ scale: 1.02, backgroundColor: "hsl(var(--destructive))" }}
+                  whileHover={{
+                    scale: 1.02,
+                    backgroundColor: "hsl(var(--destructive))",
+                  }}
                   whileTap={{ scale: 0.98 }}
                 >
                   {t("myEvents.delete")}
@@ -167,12 +185,14 @@ export default function EventCard({
                 whileHover={hasUserJoined ? {} : { scale: 1.02 }}
                 whileTap={hasUserJoined ? {} : { scale: 0.98 }}
               >
-                {hasUserJoined ? t("events.alreadyJoined") : t("events.joinEvent")}
+                {hasUserJoined
+                  ? t("events.alreadyJoined")
+                  : t("events.joinEvent")}
               </AnimatedButton>
             )}
           </motion.div>
         </CardFooter>
       </Card>
     </motion.div>
-  )
+  );
 }
